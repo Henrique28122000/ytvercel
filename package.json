@@ -1,8 +1,19 @@
 {
-  "name": "yt-downloader-vercel",
+  "name": "yt-dlp-api",
   "version": "1.0.0",
-  "type": "module",
+  "description": "API para extrair links de vídeos usando yt-dlp-exec",
+  "main": "main.js",
   "scripts": {
-    "postinstall": "curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o yt-dlp && chmod +x yt-dlp"
-  }
+    "start": "node main.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "yt-dlp-exec": "^1.1.0"
+  },
+  "engines": {
+    "node": ">=14"
+  },
+  "author": "Seu Nome",
+  "license": "MIT"
 }
+
