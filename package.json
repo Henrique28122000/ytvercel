@@ -1,8 +1,8 @@
 {
-  "name": "yt-dlp-api",
+  "name": "yt-downloader-vercel",
   "version": "1.0.0",
+  "type": "module",
   "scripts": {
     "postinstall": "curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o yt-dlp && chmod +x yt-dlp"
-  },
-  "type": "module"
+  }
 }
