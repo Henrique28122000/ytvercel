@@ -1,38 +1,30 @@
-import { exec } from 'child_process';
-import { promisify } from 'util';
-
-const execAsync = promisify(exec);
+import ytdlp from 'yt-dlp-exec';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Método não permitido' });
+    return res.status(405).json({ error: 'Only POST allowed' });
   }
 
   const { url } = req.body;
-
-  if (!url) {
-    return res.status(400).json({ error: 'URL é obrigatória' });
-  }
+  if (!url) return res.status(400).json({ error: 'URL is required' });
 
   try {
-    const cmd = `./yt-dlp -J --no-warnings --no-download "${url}"`;
-    const { stdout } = await execAsync(cmd);
+    const info = await ytdlp(url, {
+      dumpSingleJson: true,
+      noWarnings: true,
+      noDownload: true,
+    });
 
-    const data = JSON.parse(stdout);
-    const formats = data.formats || [];
-    const links = formats
-      .filter(f => f.url)
-      .map(f => ({
+    const links = info.formats
+      .filter((f) => f.url)
+      .map((f) => ({
         format_id: f.format_id,
         ext: f.ext,
-        url: f.url
+        url: f.url,
       }));
 
-    return res.status(200).json({
-      title: data.title,
-      links
-    });
+    res.json({ title: info.title, links });
   } catch (error) {
-    return res.status(400).json({ error: error.message });
+    res.status(400).json({ error: error.message });
   }
 }
